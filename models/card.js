@@ -3,10 +3,10 @@ const TaskSchema = require('./task.js')
 
 const CardSchema = new mongoose.Schema({
     title: String,
-    tasks: [{TaskSchema}],
+    tasks: [TaskSchema]
 })
 
 
 const Card = mongoose.model('Card', CardSchema)
 
-module.exports = Card
+module.exports = CardSchema

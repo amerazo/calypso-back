@@ -17,6 +17,14 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/:id', async (req, res) => {
+    try {
+        res.json(await Board.findById(req.params.id))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
+
 //post 
 router.post('/', async (req, res) => {
     try{
@@ -29,7 +37,7 @@ router.post('/', async (req, res) => {
 //put 
 router.put('/:id', async (req, res) => {
     try{
-        res.json(await Board.findByIdAndUpdate(req.params.id, req.body, { new:true }))
+        res.json(await Board.findByIdAndUpdate(req.params.id, req.body))
     } catch (error) {
         res.status(400).json(error)
     }
