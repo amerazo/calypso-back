@@ -3,7 +3,7 @@ const TaskSchema = require('./task.js')
 
 const CardSchema = new mongoose.Schema({
     title: String,
-    tasks: [TaskSchema]
+    tasks: [{TaskSchema}],
 })
 
 
