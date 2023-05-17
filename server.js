@@ -12,7 +12,7 @@ const boardRouter = require('./controllers/board')
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
-app.use('/board', boardRouter)
+app.use('/boards', boardRouter)
 
 
 
