@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
         res.status(400).json(error)
         console.log('error', error)
     }
+    // console.log(Board);
 })
 
 router.get('/:id', async (req, res) => {
@@ -27,6 +28,7 @@ router.get('/:id', async (req, res) => {
 
 //post 
 router.post('/', async (req, res) => {
+    console.log(req.body);
     try{
         res.json(await Board.create(req.body))
     } catch (error) {
@@ -41,6 +43,7 @@ router.put('/:id', async (req, res) => {
     } catch (error) {
         res.status(400).json(error)
     }
+   
 })
 
 //delete
