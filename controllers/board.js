@@ -1,60 +1,56 @@
-const express = require('express')
-const Board = require('../models/board')
-const Task = require('../models/task')
-const Card = require('../models/card')
-const router = express.Router()
+const express = require('express');
+const Board = require('../models/board');
+const Card = require('../models/card');
+const router = express.Router();
 
-
-
-
-//get
+// Get all boards
 router.get('/', async (req, res) => {
-    try{
-        res.json(await Board.find({})).status(200)
-    } catch (error) {
-        res.status(400).json(error)
-        console.log('error', error)
-    }
-    // console.log(Board);
-})
+  try {
+    const boards = await Board.find({}).populate('cards');
+    res.json(boards);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
+// Get a specific board
 router.get('/:id', async (req, res) => {
-    try {
-        res.json(await Board.findById(req.params.id))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+  try {
+    const board = await Board.findById(req.params.id).populate('cards');
+    res.json(board);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
-//post 
+// Create a new board
 router.post('/', async (req, res) => {
-    console.log(req.body);
-    try{
-        res.json(await Board.create(req.body))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+  try {
+    const board = await Board.create(req.body);
+    res.json(board);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
-//put 
+// Update a board
 router.put('/:id', async (req, res) => {
-    try{
-        res.json(await Board.findByIdAndUpdate(req.params.id, req.body))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-   
-})
+  try {
+    const board = await Board.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(board);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
-//delete
+// Delete a board
 router.delete('/:id', async (req, res) => {
-    try{
-        res.json(await Board.findByIdAndRemove(req.params.id))
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
-
-
+  try {
+    const board = await Board.findByIdAndRemove(req.params.id);
+    res.json(board);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 module.exports = router;

@@ -15,7 +15,7 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use('/boards', boardRouter)
-app.use('/:boardId/cards', cardRouter)
+app.use('/boards/:boardId/cards', cardRouter)
 app.use('/tasks/:id', taskRouter)
 
 
