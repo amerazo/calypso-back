@@ -6,6 +6,8 @@ const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
 const boardRouter = require('./controllers/board')
+const cardRouter = require('./controllers/card')
+const taskRouter = require('./controllers/task')
 
 
 //middleware
@@ -13,17 +15,12 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use('/boards', boardRouter)
-
-
+app.use('/:boardId/cards', cardRouter)
+app.use('/tasks/:id', taskRouter)
 
 
 app.get('/', (req, res) => {
     res.send('hello')
 })
-
-const cardRouter = require('./controllers/card');
-app.use('/cards', cardRouter);
-
-
 
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`))
