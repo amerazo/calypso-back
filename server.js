@@ -21,5 +21,9 @@ app.get('/', (req, res) => {
     res.send('hello')
 })
 
+const cardRouter = require('./controllers/card');
+app.use('/cards', cardRouter);
+
+
 
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`))
