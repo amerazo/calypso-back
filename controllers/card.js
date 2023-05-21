@@ -2,12 +2,13 @@ const express = require('express');
 const Board = require('../models/board');
 const Card = require('../models/card');
 const Task = require('../models/task');
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 
 
 router.get('/', async (req, res) => {
   try {
-    const cards = await Card.find({ board: req.params.boardId })
+    const cards = await Card.find({ boardId: req.params.boardId })
+    console.log(req.params.boardId);
     res.json(cards);
   } catch (error) {
     res.status(400).json(error);
@@ -28,7 +29,7 @@ router.get('/:id', async (req, res) => {
 // Create a new card POST
 router.post('/', async (req, res) => {
     try {
-        const card = await Card.create({ ...req.body, boardId: req.params.boardId });
+        const card = await Card.create({ ...req.body});
         const board = await Board.findByIdAndUpdate(
           req.params.boardId,
           { $push: { cards: card._id } },
