@@ -5,6 +5,7 @@ const {TaskSchema} = require('./task.js')
 
 const CardSchema = new mongoose.Schema({
     title: String,
+    boardId: String,
     tasks: [TaskSchema]
 })
 
