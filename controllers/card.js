@@ -1,14 +1,15 @@
+
+// module.exports = router;
 const express = require('express');
 const Board = require('../models/board');
 const Card = require('../models/card');
 const Task = require('../models/task');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 
-
+// Get all cards for a specific board
 router.get('/', async (req, res) => {
   try {
-    const cards = await Card.find({ boardId: req.params.boardId })
-    console.log(req.params.boardId);
+    const cards = await Card.find({ boardId: req.params.boardId });
     res.json(cards);
   } catch (error) {
     res.status(400).json(error);
@@ -18,28 +19,24 @@ router.get('/', async (req, res) => {
 // Get a specific card
 router.get('/:id', async (req, res) => {
   try {
-    // const card = await Card.findById(req.params.id).populate('tasks');
-    const card = await Card.findById(req.params.id)
+    const card = await Card.findById(req.params.id).populate('tasks');
     res.json(card);
   } catch (error) {
     res.status(400).json(error);
   }
 });
 
-// Create a new card POST
+// Create a new card
 router.post('/', async (req, res) => {
-    try {
-        const card = await Card.create({ ...req.body});
-        const board = await Board.findByIdAndUpdate(
-          req.params.boardId,
-          { $push: { cards: card._id } },
-          { new: true }
-          );
-          console.log(card)
-        res.json(card);
-      }
-  
-catch (error) {
+  try {
+    const card = await Card.create({ ...req.body, boardId: req.params.boardId });
+    const board = await Board.findByIdAndUpdate(
+      req.params.boardId,
+      { $push: { cards: card._id } },
+      { new: true }
+    );
+    res.json(card);
+  } catch (error) {
     res.status(400).json(error);
   }
 });
@@ -65,4 +62,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
