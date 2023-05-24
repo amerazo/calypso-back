@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
       const card = await Card.findById(req.params.cardId);
       console.log('Card found:', card); 
   
-      const task = await Task.create({ ...req.body, card: card._id });
+      const task = await Task.create({ ...req.body, cardId: card._id });
       console.log('Task created:', task); 
   
       card.tasks.push(task._id);
