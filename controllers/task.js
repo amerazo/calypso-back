@@ -52,6 +52,21 @@ router.post('/', async (req, res) => {
 // Update a task
 router.put('/:id', async (req, res) => {
   try {
+    // Update cards to move the taskId from one to the other.
+    const task = await Task.findById(req.params.id);
+    const oldCardId = task.cardId.toString();
+
+    const newCardId = req.body.cardId;
+    if (oldCardId != newCardId) {
+      const card = await Card.findById(oldCardId);
+      const index = card.tasks.indexOf(task._id);
+      card.tasks.splice(index, 1);
+      await card.save();
+      const newCard = await Card.findById(newCardId);
+      newCard.tasks.push(task._id);
+      await newCard.save()
+    }
+    // update task with new card ID
     res.json(await Task.findByIdAndUpdate(req.params.id, req.body));
   } catch (error) {
     res.status(400).json(error);
