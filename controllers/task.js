@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
       const card = await Card.findById(req.params.cardId);
       console.log('Card found:', card); 
   
-      const task = await Task.create({ ...req.body, card: card._id });
+      const task = await Task.create({ ...req.body, cardId: card._id });
       console.log('Task created:', task); 
   
       card.tasks.push(task._id);
@@ -52,6 +52,21 @@ router.post('/', async (req, res) => {
 // Update a task
 router.put('/:id', async (req, res) => {
   try {
+    // Update cards to move the taskId from one to the other.
+    const task = await Task.findById(req.params.id);
+    const oldCardId = task.cardId.toString();
+
+    const newCardId = req.body.cardId;
+    if (oldCardId != newCardId) {
+      const card = await Card.findById(oldCardId);
+      const index = card.tasks.indexOf(task._id);
+      card.tasks.splice(index, 1);
+      await card.save();
+      const newCard = await Card.findById(newCardId);
+      newCard.tasks.push(task._id);
+      await newCard.save()
+    }
+    // update task with new card ID
     res.json(await Task.findByIdAndUpdate(req.params.id, req.body));
   } catch (error) {
     res.status(400).json(error);

@@ -6,7 +6,7 @@ const {TaskSchema} = require('./task.js')
 const CardSchema = new mongoose.Schema({
     title: String,
     boardId: String,
-    tasks: [TaskSchema]
+    tasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Task'}]
 })
 
 const Card = mongoose.model('Card', CardSchema)
